@@ -1,357 +1,316 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Pi Calculator & Budget Buddy</title>
-   <script src="https://minepi.com"></script>
-   <!-- د ګراف لپاره رسمي لینک ورزیات شو -->
-   <script src="https://jsdelivr.net"></script>
-   <style>
-       body {
-           font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-           background-color: #1a1a2e;
-           color: #ffffff;
-           padding: 20px;
-           transition: 0.3s;
-       }
-       .rtl { direction: rtl; text-align: right; }
-       .ltr { direction: ltr; text-align: left; }
-       .container {
-           max-width: 500px;
-           margin: auto;
-           background: #16213e;
-           padding: 20px;
-           border-radius: 10px;
-           box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-       }
-       h2, h3, h4 { color: #e94560; text-align: center; }
-       input, button, select {
-           width: 100%;
-           padding: 12px;
-           margin: 10px 0;
-           border-radius: 5px;
-           border: none;
-           box-sizing: border-box;
-           font-size: 1em;
-       }
-       input, select { background: #0f3460; color: white; }
-       button {
-           background-color: #e94560;
-           color: white;
-           font-weight: bold;
-           cursor: pointer;
-           transition: 0.2s;
-       }
-       button:hover { background-color: #ff6b81; }
-       .pay-btn { background-color: #6c5ce7; }
-       .pay-btn:hover { background-color: #a29bfe; }
-       .clear-btn { background-color: #4e4e50; margin-top: 5px; }
-       .clear-btn:hover { background-color: #6e6e70; }
-       .lang-btn { background-color: #00b894; margin-bottom: 15px; }
-       .lang-btn:hover { background-color: #55efc4; }
-       .result, .goal-box {
-           background: #0f3460;
-           padding: 15px;
-           border-radius: 5px;
-           margin-top: 15px;
-           font-size: 1.1em;
-           font-weight: bold;
-           text-align: center;
-       }
-       .result { border-left: 5px solid #e94560; }
-       .goal-box { border-left: 5px solid #00b894; }
-       ul { list-style: none; padding: 0; }
-       li { background: #0f3460; padding: 12px; margin: 8px 0; border-radius: 5px; display: flex; justify-content: space-between; }
-       hr { border: 0; height: 1px; background: #e94560; margin: 25px 0; }
-       .auth-box { background: #0f3460; padding: 10px; text-align: center; border-radius: 5px; margin-bottom: 15px; font-weight: bold; }
-       .chart-container { margin-top: 20px; background: #0f3460; padding: 10px; border-radius: 5px; }
-   </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solo Budget Buddy</title>
+    <script src="https://minepi.com"></script>
+    <script src="https://jsdelivr.net"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1a1a2e;
+            color: #ffffff;
+            padding: 20px;
+            transition: 0.3s;
+        }
+        .rtl { direction: rtl; text-align: right; }
+        .ltr { direction: ltr; text-align: left; }
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: #16213e;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        h2, h3, h4 { color: #e94560; text-align: center; }
+        input, button, select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: none;
+            box-sizing: border-box;
+            font-size: 1em;
+        }
+        input, select { background: #0f3460; color: white; }
+        button {
+            background-color: #e94560;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        button:hover { background-color: #ff6b81; }
+        .pay-btn { background-color: #6c5ce7; }
+        .pay-btn:hover { background-color: #a29bfe; }
+        .clear-btn { background-color: #4e4e50; margin-top: 5px; }
+        .clear-btn:hover { background-color: #6e6e70; }
+        .lang-btn { background-color: #00b894; margin-bottom: 15px; }
+        .lang-btn:hover { background-color: #55efc4; }
+        .result, .goal-box {
+            background: #0f3460;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            font-size: 1.1em;
+            font-weight: bold;
+            text-align: center;
+        }
+        .result { border-left: 5px solid #e94560; }
+        .goal-box { border-left: 5px solid #00b894; }
+        ul { list-style: none; padding: 0; }
+        li { background: #0f3460; padding: 12px; margin: 8px 0; border-radius: 5px; display: flex; justify-content: space-between; }
+        hr { border: 0; height: 1px; background: #e94560; margin: 25px 0; }
+        .auth-box { background: #0f3460; padding: 10px; text-align: center; border-radius: 5px; margin-bottom: 15px; font-weight: bold; }
+        .chart-container { margin-top: 20px; background: #0f3460; padding: 10px; border-radius: 5px; }
+    </style>
 </head>
 <body class="ltr" id="appBody">
 
 <div class="container">
-   <!-- د ژبې د اړولو تڼۍ -->
-   <button onclick="toggleLanguage()" class="lang-btn" id="langBtn">🇦🇫 پښتو ته اړول (Pashto)</button>
+    <button onclick="toggleLanguage()" class="lang-btn" id="langBtn">🇦🇫 پښتو ته اړول (Pashto)</button>
 
-   <h2 id="mainTitle">Pi Calculator & Budget Buddy</h2>
-   <div id="authStatus" class="auth-box">Connecting to Pi Network...</div>
+    <h2 id="mainTitle">Solo Budget Buddy</h2>
+    <div id="authStatus" class="auth-box">Connecting to Pi Network...</div>
 
-   <!-- Pi Section -->
-   <label for="piAmount" id="lblBalance">Your Pi Balance:</label>
-   <input type="number" id="piAmount" placeholder="e.g. 100">
+    <!-- Pi Section -->
+    <label for="piAmount" id="lblBalance">Your Pi Balance:</label>
+    <input type="number" id="piAmount" placeholder="e.g. 100">
 
-   <label for="piPrice" id="lblPrice">Pi Price (USD):</label>
-   <input type="number" id="piPrice" placeholder="e.g. 0.50">
+    <label for="piPrice" id="lblPrice">Pi Price (USD):</label>
+    <input type="number" id="piPrice" placeholder="e.g. 0.50">
 
-   <button onclick="calculatePi()" id="btnCalc">Calculate Total Value</button>
-   <div class="result" id="piResult">Total Value: $0.00</div>
-   <button onclick="transferPi()" class="pay-btn" id="btnPay">⚡ Pay with Pi (Testnet)</button>
+    <button onclick="calculatePi()" id="btnCalc">Calculate Total Value</button>
+    <div class="result" id="piResult">Total Value: $0.00</div>
+    <button onclick="transferPi()" class="pay-btn" id="btnPay">⚡ Pay with Pi (Testnet)</button>
 
-   <hr>
+    <hr>
 
-   <!-- Savings Goal Section -->
-   <h3 id="goalTitle">Savings Goal</h3>
-   <label for="goalAmount" id="lblGoal">Target Savings (USD):</label>
-   <input type="number" id="goalAmount" placeholder="e.g. 50" oninput="updateGoal()">
-   <div class="goal-box" id="goalResult">Saved: $0.00 / Target: $0.00 (0%)</div>
+    <!-- Savings Goal Section -->
+    <h3 id="goalTitle">Savings Goal</h3>
+    <label for="goalAmount" id="lblGoal">Target Savings (USD):</label>
+    <input type="number" id="goalAmount" placeholder="e.g. 50" oninput="updateGoal()">
+    <div class="goal-box" id="goalResult">Saved: $0.00 / Target: $0.00 (0%)</div>
 
-   <hr>
+    <hr>
 
-   <!-- Expenses Section -->
-   <h3 id="expTitle">Daily Expense Tracker</h3>
-   <label for="expCategory" id="lblCat">Category:</label>
-   <select id="expCategory">
-       <option value="Food" id="optFood">Food / Groceries</option>
-       <option value="Internet" id="optNet">Internet / Data</option>
-       <option value="Transport" id="optTrans">Transport</option>
-       <option value="Other" id="optOther">Other</option>
-   </select>
+    <!-- Expenses Section -->
+    <h3 id="expTitle">Daily Expense Tracker</h3>
+    <label for="expCategory" id="lblCat">Category:</label>
+    <select id="expCategory">
+        <option value="Food" id="optFood">Food / Groceries</option>
+        <option value="Internet" id="optNet">Internet / Data</option>
+        <option value="Transport" id="optTransport">Transport</option>
+        <option value="Other" id="optOther">Other</option>
+    </select>
 
-   <label for="expCost" id="lblCost">Amount (USD):</label>
-   <input type="number" id="expCost" placeholder="e.g. 5">
+    <label for="expCost" id="lblCost">Amount (USD):</label>
+    <input type="number" id="expCost" placeholder="e.g. 5">
 
-   <button onclick="addExpense()" id="btnAddExp">Add Expense</button>
+    <button onclick="addExpense()" id="btnAddExp">Add Expense</button>
 
-   <h4 id="listTitle">Expense List:</h4>
-   <ul id="expenseList"></ul>
-   <button onclick="clearExpenses()" class="clear-btn" id="btnClear">Clear All Expenses</button>
+    <h4 id="listTitle">Expense List:</h4>
+    <ul id="expenseList"></ul>
+    <button onclick="clearExpenses()" class="clear-btn" id="btnClear">Clear All Expenses</button>
 
-   <!-- د مالي لګښتونو ګراف -->
-   <div class="chart-container">
-       <canvas id="expenseChart"></canvas>
-   </div>
+    <div class="chart-container">
+        <canvas id="expenseChart"></canvas>
+    </div>
 </div>
 
 <script>
-   let currentLang = 'en';
-   let myChart = null;
-
-   const translations = {
-       en: {
-           title: "Pi Calculator & Budget Buddy", balance: "Your Pi Balance:", price: "Pi Price (USD):",
-           calc: "Calculate Total Value", total: "Total Value:", pay: "⚡ Pay with Pi (Testnet)",
-           goal: "Savings Goal", target: "Target Savings (USD):", savedStatus: "Saved: $",
-           expense: "Daily Expense Tracker", cat: "Category:", amount: "Amount (USD):",
-           add: "Add Expense", list: "Expense List:", clear: "Clear All Expenses",
-           food: "Food / Groceries", net: "Internet / Data", trans: "Transport", other: "Other",
-           langText: "🇦🇫 پښتو ته اړول (Pashto)"
-       },
-       ps: {
-           title: "د Pi حسابګر او د بودیجې ملګری", balance: "ستا د Pi کواینونو شمېر:", price: "د یو Pi قیمت (په ډالرو):",
-           calc: "مجموعي ارزښت حساب کړه", total: "مجموعي ارزښت:", pay: "⚡ په Pi باندې تادیه (ټیسټنیټ)",
-           goal: "د پیسو د سپما هدف", target: "د سپما هدف (په ډالرو):", savedStatus: "سپما شوې: $",
-           expense: "د ورځني مصرف ریکارډ", cat: "کټګوري/ډله:", amount: "مصرف (په ډالرو):",
-           add: "مصرف ورزیات کړه", list: "د مصرفونو لیست:", clear: "لیست په بشپړ ډول پاک کړه",
-           food: "خواړه / سودا", net: "انټرنیټ / کارډونه", trans: "ټرانسپورټ / تګ راتګ", other: "نور لګښتونه",
-           langText: "🇬🇧 انګلیسي ته اړول (English)"
-       }
-   };
-
-   // د ژبې د بدلولو فنکشن
-   function toggleLanguage() {
-       const body = document.getElementById('appBody');
-       currentLang = currentLang === 'en' ? 'ps' : 'en';
-       
-       if(currentLang === 'ps') {
-           body.className = "rtl";
-       } else {
-           body.className = "ltr";
-       }
-
-       const t = translations[currentLang];
-       document.getElementById('langBtn').innerText = t.langText;
-       document.getElementById('mainTitle').innerText = t.title;
-       document.getElementById('lblBalance').innerText = t.balance;
-       document.getElementById('lblPrice').innerText = t.price;
-       document.getElementById('btnCalc').innerText = t.calc;
-       document.getElementById('goalTitle').innerText = t.goal;
-       document.getElementById('lblGoal').innerText = t.target;
-       document.getElementById('expTitle').innerText = t.expense;
-       document.getElementById('lblCat').innerText = t.cat;
-       document.getElementById('lblCost').innerText = t.amount;
-       document.getElementById('btnAddExp').innerText = t.add;
-       document.getElementById('listTitle').innerText = t.list;
-       document.getElementById('btnClear').innerText = t.clear;
-       document.getElementById('optFood').innerText = t.food;
-       document.getElementById('optNet').innerText = t.net;
-       document.getElementById('optTrans').innerText = t.trans;
-       document.getElementById('optOther').innerText = t.other;
-
-       calculatePi();
-       updateGoal();
-       renderExpenses();
-   }
-
-   const Pi = window.Pi || null;
-   if (Pi) {
-       try { Pi.init({ version: "2.0", sandbox: true }); } catch(e) {}
-   }
-
-   document.addEventListener("DOMContentLoaded", () => {
-       loadExpenses();
-       authPiUser();
-       initChart();
-   });
-
-   async function authPiUser() {
-       const statusBox = document.getElementById('authStatus');
-       if (Pi) {
-           try {
-               const scopes = ['username', 'payments'];
-               const auth = await Pi.authenticate(scopes, () => {});
-               statusBox.innerText = `Welcome, ${auth.user.username}! ✨`;
-               statusBox.style.color = "#00ffcc";
-           } catch (error) {
-               statusBox.innerText = "Logged in as Guest (Open in Pi Browser)";
-               statusBox.style.color = "#ffcc00";
-           }
-       } else {
-           statusBox.innerText = "Logged in as Guest (Local Mode)";
-           statusBox.style.color = "#ffcc00";
-       }
-   }
-
-   function calculatePi() {
-       const amount = document.getElementById('piAmount').value || 0;
-       const price = document.getElementById('piPrice').value || 0;
-       const total = amount * price;
-       const text = translations[currentLang].total;
-       document.getElementById('piResult').innerText = `${text} $${total.toFixed(2)}`;
-       updateGoal();
-   }
-
-   // د سپما د هدف سیسټم
-   function updateGoal() {
-       const target = parseFloat(document.getElementById('goalAmount').value) || 0;
-       const amount = parseFloat(document.getElementById('piAmount').value) || 0;
-       const price = parseFloat(document.getElementById('piPrice').value) || 0;
-       const totalValue = amount * price;
-
-       let totalExpenses = 0;
-       let expenses = localStorage.getItem('expenses') ? JSON.parse(localStorage.getItem('expenses')) : [];
-       expenses.forEach(e => totalExpenses += parseFloat(e.cost));
-
-       const currentSavings = totalValue - totalExpenses;
-       let percentage = target > 0 ? (currentSavings / target) * 100 : 0;
-       if (percentage < 0) percentage = 0;
-
-if (percentage > 100) percentage = 100;
-
-const t = translations[currentLang];
-
-document.getElementById('goalResult').innerText = ${t.savedStatus}${currentSavings.toFixed(2)} / Target: $${target.toFixed(2)} (${percentage.toFixed(0)}%);
-
-}
-
-function addExpense() {
-
-const category = document.getElementById('expCategory').value;
-
-const cost = document.getElementById('expCost').value;
-
-if(cost === '') return;
-
-const expense = { name: category, cost: parseFloat(cost).toFixed(2) };
-
-let expenses = localStorage.getItem('expenses') ? JSON.parse(localStorage.getItem('expenses')) : [];
-
-expenses.push(expense);
-
-localStorage.setItem('expenses', JSON.stringify(expenses));
-
-renderExpenses();
-
-updateGoal();
-
-updateChart();
-
-document.getElementById('expCost').value = '';
-
-}
-
-function renderExpenses() {
-
-const list = document.getElementById('expenseList');
-
-list.innerHTML = '';
-
-let expenses = localStorage.getItem('expenses') ? JSON.parse(localStorage.getItem('expenses')) : [];
-
-expenses.forEach(exp => {
-
-const li = document.createElement('li');
-
-const displayCat = currentLang === 'ps' ? (translations['ps'][exp.name.toLowerCase()] || exp.name) : exp.name;
-
-li.innerHTML = <span>${displayCat}:</span> <span>$${exp.cost}</span>;
-
-list.appendChild(li);
-
-});
-
-}
-
-function clearExpenses() {
-
-localStorage.removeItem('expenses');
-
-renderExpenses();
-
-updateGoal();
-
-updateChart();
-
-}
-
-// د ګراف سیسټم (Chart.js)
-
-function initChart() {
-
-const ctx = document.getElementById('expenseChart').getContext('2d');
-
-myChart = new Chart(ctx, {
-
-type: 'doughnut',
-
-data: {
-
-labels: ['Food', 'Internet', 'Transport', 'Other'],
-
-datasets: [{
-
-data:,
-
-backgroundColor: ['#ff6b81', '#00cec9', '#ffeaa7', '#a29bfe']
-
-}]
-
-},
-
-options: { responsive: true, plugins: { legend: { labels: { color: 'white' } } } }
-
-});
-
-updateChart();
-
-}
-
-function updateChart() {
-
-if(!myChart) return;
-
-let expenses = localStorage.getItem('expenses') ? JSON.parse(localStorage.getItem('expenses')) : [];
-
-let totals = { Food: 0, Internet: 0, Transport: 0, Other: 0 };
-
-expenses.forEach(e => {
-
-if(totals[e.name] !== undefined) totals[e.name] += parseFloat(e.cost);
-
-});
-
-myChart.data.datasets[0].data = [totals.Food, totals.Internet, totals.Transport, totals.Other];
-
-myChart.update();
-
-}
+    let currentLang = 'en';
+    let myChart = null;
+
+    const translations = {
+        en: {
+            title: "Solo Budget Buddy", balance: "Your Pi Balance:", price: "Pi Price (USD):",
+            calc: "Calculate Total Value", total: "Total Value:", pay: "⚡ Pay with Pi (Testnet)",
+            goal: "Savings Goal", target: "Target Savings (USD):", savedStatus: "Saved: $",
+            expense: "Daily Expense Tracker", cat: "Category:", amount: "Amount (USD):",
+            add: "Add Expense", list: "Expense List:", clear: "Clear All Expenses",
+            food: "Food / Groceries", net: "Internet / Data", transport: "Transport", other: "Other",
+            langText: "🇦🇫 پښتو ته اړول (Pashto)"
+        },
+        ps: {
+            title: "د بودیجې ملګری", balance: "ستا د Pi کواینونو شمېر:", price: "د یو Pi قیمت (په ډالرو):",
+            calc: "مجموعي ارزښت حساب کړه", total: "مجموعي ارزښت:", pay: "⚡ په Pi باندې تادیه (ټیسټنیټ)",
+            goal: "د پیسو د سپما هدف", target: "د سپما هدف (په ډالرو):", savedStatus: "سپما شوې: $",
+            expense: "د ورځني مصرف ریکارډ", cat: "کټګوري/ډله:", amount: "مصرف (په ډالرو):",
+            add: "مصرف ورزیات کړه", list: "د مصرفونو لیست:", clear: "لیست په بشپړ ډول پاک کړه",
+            food: "خواړه / سودا", net: "انټرنیټ / کارډونه", transport: "ټرانسپورټ / تګ راتګ", other: "نور لګښتونه",
+            langText: "🇬🇧 انګلیسي ته اړول (English)"
+        }
+    };
+
+    function toggleLanguage() {
+        const body = document.getElementById('appBody');
+        currentLang = currentLang === 'en' ? 'ps' : 'en';
+        body.className = currentLang === 'ps' ? "rtl" : "ltr";
+
+        const t = translations[currentLang];
+        document.getElementById('langBtn').innerText = t.langText;
+        document.getElementById('mainTitle').innerText = t.title;
+        document.getElementById('lblBalance').innerText = t.balance;
+        document.getElementById('lblPrice').innerText = t.price;
+        document.getElementById('btnCalc').innerText = t.calc;
+        document.getElementById('goalTitle').innerText = t.goal;
+        document.getElementById('lblGoal').innerText = t.target;
+        document.getElementById('expTitle').innerText = t.expense;
+        document.getElementById('lblCat').innerText = t.cat;
+        document.getElementById('lblCost').innerText = t.amount;
+        document.getElementById('btnAddExp').innerText = t.add;
+        document.getElementById('listTitle').innerText = t.list;
+        document.getElementById('btnClear').innerText = t.clear;
+        document.getElementById('optFood').innerText = t.food;
+        document.getElementById('optNet').innerText = t.net;
+        document.getElementById('optTransport').innerText = t.transport;
+        document.getElementById('optOther').innerText = t.other;
+
+        calculatePi();
+        updateGoal();
+        renderExpenses();
+    }
+
+    const Pi = window.Pi || null;
+    if (Pi) {
+        try { 
+            Pi.init({ version: "2.0", sandbox: true }); 
+        } catch(e) {}
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        loadExpenses();
+        authPiUser();
+        initChart();
+    });
+
+    async function authPiUser() {
+        const statusBox = document.getElementById('authStatus');
+        if (Pi) {
+            try {
+                const scopes = ['username', 'payments'];
+                const auth = await Pi.authenticate(scopes, onIncompletePaymentFound);
+                statusBox.innerText = `Welcome, ${auth.user.username}! ✨`;
+                statusBox.style.color = "#00ffcc";
+            } catch (error) {
+                statusBox.innerText = "Logged in as Guest (Open in Pi Browser)";
+                statusBox.style.color = "#ffcc00";
+            }
+        } else {
+            statusBox.innerText = "Logged in as Guest (Local Mode)";
+            statusBox.style.color = "#ffcc00";
+        }
+    }
+
+    async function transferPi() {
+        if (!Pi) {
+            alert("Please open this app inside the Pi Browser to make payments!");
+            return;
+        }
+        try {
+            await Pi.createPayment({
+                amount: 1.0,
+                memo: "Testing Pi Budget App Payment",
+                metadata: { appId: "brmgptlnwi99cnhcmpembvtrp8gz8gww5r4kcznu3qvrecclmf8fpd6umzxxwe4f" },
+            }, {
+                onReadyForServerApproval: function(paymentId) { console.log("Approval:", paymentId); },
+                onReadyForServerCompletion: function(paymentId, txid) { console.log("Completion:", txid); },
+                onCancel: function(paymentId) { alert("Payment canceled."); },
+                onError: function(error, payment) { alert("Payment Error!"); }
+            });
+        } catch(err) {
+            alert("Payment initialization failed.");
+        }
+    }
+
+    function onIncompletePaymentFound(payment) { console.log("Incomplete payment:", payment); }
+
+    function calculatePi() {
+        const amount = document.getElementById('piAmount').value || 0;
+        const price = document.getElementById('piPrice').value || 0;
+        const total = amount * price;
+        document.getElementById('piResult').innerText = `${translations[currentLang].total} $${total.toFixed(2)}`;
+        updateGoal();
+    function updateGoal() {
+        const target = parseFloat(document.getElementById('goalAmount').value) || 0;
+        const amount = parseFloat(document.getElementById('piAmount').value) || 0;
+        const price = parseFloat(document.getElementById('piPrice').value) || 0;
+        const totalValue = amount * price;
+
+        let totalExpenses = 0;
+        let expenses = localStorage.getItem('expenses') ? JSON.parse(localStorage.getItem('expenses')) : [];
+        expenses.forEach(e => totalExpenses += parseFloat(e.cost));
+
+        const currentSavings = totalValue - totalExpenses;
+        let percentage = target > 0 ? (currentSavings / target) * 100 : 0;
+        if (percentage < 0) percentage = 0;
+        if (percentage > 100) percentage = 100;
+
+        document.getElementById('goalResult').innerText = `${translations[currentLang].savedStatus}${currentSavings.toFixed(2)} / Target: $${target.toFixed(2)} (${percentage.toFixed(0)}%)`;
+    }
+
+    function addExpense() {
+        const category = document.getElementById('expCategory').value;
+        const cost = document.getElementById('expCost').value;
+        if(cost === '') return;
+
+        const expense = { name: category, cost: parseFloat(cost).toFixed(2) };
+        let expenses = localStorage.getItem('expenses') ? JSON.parse(localStorage.getItem('expenses')) : [];
+        expenses.push(expense);
+        localStorage.setItem('expenses', JSON.stringify(expenses));
+
+        renderExpenses();
+        updateGoal();
+        updateChart();
+        document.getElementById('expCost').value = '';
+    }
+
+    function renderExpenses() {
+        const list = document.getElementById('expenseList');
+        list.innerHTML = '';
+        let expenses = localStorage.getItem('expenses') ? JSON.parse(localStorage.getItem('expenses')) : [];
+        expenses.forEach(exp => {
+            const li = document.createElement('li');
+            const displayCat = currentLang === 'ps' ? (translations['ps'][exp.name.toLowerCase()] || exp.name) : exp.name;
+            li.innerHTML = `<span>${displayCat}:</span> <span>$${exp.cost}</span>`;
+            list.appendChild(li);
+        });
+    }
+
+    function clearExpenses() {
+        localStorage.removeItem('expenses');
+        renderExpenses();
+        updateGoal();
+        updateChart();
+    }
+
+    function initChart() {
+        const ctx = document.getElementById('expenseChart').getContext('2d');
+        myChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Food', 'Internet', 'Transport', 'Other'],
+                datasets: [{ 
+                    data:, 
+                    backgroundColor: ['#ff6b81', '#00cec9', '#ffeaa7', '#a29bfe'] 
+                }]
+            },
+            options: { responsive: true, plugins: { legend: { labels: { color: 'white' } } } }
+        });
+        updateChart();
+    }
+
+    function updateChart() {
+        if(!myChart) return;
+        let expenses = localStorage.getItem('expenses') ? JSON.parse(localStorage.getItem('expenses')) : [];
+        let totals = { Food: 0, Internet: 0, Transport: 0, Other: 0 };
+        expenses.forEach(e => { if(totals[e.name] !== undefined) totals[e.name] += parseFloat(e.cost); });
+        myChart.data.datasets[0].data = [totals.Food, totals.Internet, totals.Transport, totals.Other];
+        myChart.update();
+    }
+</script>
+</body>
+</html>
